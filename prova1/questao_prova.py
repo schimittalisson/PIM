@@ -13,7 +13,6 @@ class get_color():
 
     def get_img_color_channels(self, img):
         b,g,r = cv2.split(img)
-        
         return b,g,r
 
     def define_color(self, red, green, blue):
