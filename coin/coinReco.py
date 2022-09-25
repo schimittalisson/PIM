@@ -1,29 +1,23 @@
-"""
-Coin recognition, real life application
-task: calculate the value of coins on picture
-"""
-
 import cv2
-import numpy as np
+
 
 def detect_coins():
-    coins = cv2.imread('/home/alisson/Documentos/udesc/PIM/coin/coins.jpg', 1)
+    coins = cv2.imread('coins.jpg')
 
     gray = cv2.cvtColor(coins, cv2.COLOR_BGR2GRAY)
     img = cv2.medianBlur(gray, 7)
     circles = cv2.HoughCircles(
-        img,  # source image
-        cv2.HOUGH_GRADIENT,  # type of detection
+        img,
+        cv2.HOUGH_GRADIENT,
         1,
         50,
         param1=100,
         param2=50,
-        minRadius=10,  # minimal radius
-        maxRadius=380,  # max radius
+        minRadius=10,
+        maxRadius=380,
     )
 
     coins_copy = coins.copy()
-
 
     for detected_circle in circles[0]:
         x_coor, y_coor, detected_radius = detected_circle
@@ -35,9 +29,10 @@ def detect_coins():
             4,
         )
 
-    cv2.imwrite("/home/alisson/Documentos/udesc/PIM/coin/coin_test.jpg", coins_detected)
+    cv2.imwrite("coin_test.jpg", coins_detected)
 
     return circles
+
 
 def calculate_amount():
     reais = {
@@ -71,10 +66,10 @@ def calculate_amount():
         coordinates.append([x_coor, y_coor])
 
     smallest = min(radius)
-    tolerance = 0.04
+    tolerance = 0.15
     total_amount = 0
 
-    coins_circled = cv2.imread('/home/alisson/Documentos/udesc/PIM/coin/coin_test.jpg', 1)
+    coins_circled = cv2.imread('coin_test.jpg')
     font = cv2.FONT_HERSHEY_SIMPLEX
 
     for coin in circles[0]:
@@ -94,9 +89,7 @@ def calculate_amount():
         pieces = reais[real]['count']
         print(f"{real} = {pieces}x")
 
-
-    cv2.imwrite('/home/alisson/Documentos/udesc/PIM/coin/coins_value.jpg', coins_circled)
-
+    cv2.imwrite('coins_value.jpg', coins_circled)
 
 
 if __name__ == "__main__":
